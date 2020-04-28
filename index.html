@@ -1,14 +1,134 @@
 <html>
   <head>
     <title>Meme generator</title>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Jacques+Francois+Shadow&display=swap"
+      rel="stylesheet"
+    />
     <link rel="stylesheet" href="style.css" />
   </head>
   <body>
-    <div class="form">
+    <div class="titleAndForm">
       <div class="title">
         <h1>I CAN HAZ MEMEZ?</h1>
+        <p>Fill out the form to start creating memes!</p>
       </div>
+      <form class="memeForm" id="memeForm">
+        <div class="memeForm">
+          <label>Image URL</label>
+          <input
+            type="text"
+            name="formUrl"
+            required
+            placeholder="What's the URL for your meme image?"
+          />
+        </div>
+        <div class="memeForm">
+          <label>Text on Top</label>
+          <input
+            type="text"
+            name="formTopText"
+            placeholder="(Optional) What text do you want at the top of the meme?"
+          />
+        </div>
+        <div class="memeForm">
+          <label>Text On Bottom</label>
+          <input
+            type="text"
+            name="formBtmText"
+            placeholder="(Optional) What text do you want at the bottom of the meme?"
+          />
+        </div>
+        <div class="submitForm memeForm">
+          <label></label>
+          <input type="submit" name="submit" class="submit" value="Add Meme" />
+        </div>
+      </form>
     </div>
-    <div class="memes"></div>
+    <div class="memes">
+      <!-- <div class="meme">
+        <img class="memeImg"
+          src="https://news.nationalgeographic.com/content/dam/news/photos/000/755/75552.ngsversion.1422285553360.adapt.1900.1.jpg"
+        />
+        <p class="memeTopText">Top text</p>
+        <p class="memeBtmText">Bottom text</p>
+      </div> -->
+    </div>
+    <script>
+      var memeForm = document.getElementById("memeForm");
+      memeForm.addEventListener("submit", submitHandler);
+
+      // TODO: This does NOT work
+      // var memes = document.getElementsByClassName("meme");
+      // for (var i = 0; i < memes.length; i++) {
+      //   memes[i].addEventListener("mouseenter", mouseenterHandler);
+      //   memes[i].addEventListener("mouseout", mouseoutHandler);
+      // }
+
+      function submitHandler(event) {
+        var memesContainer = document.getElementsByClassName("memes")[0];
+        var meme = document.createElement("div");
+        var memeImg = document.createElement("img");
+        var memeTopText = document.createElement("p");
+        var memeBtmText = document.createElement("p");
+        meme.className = "meme";
+        memeImg.className = "memeImg";
+        memeImg.src = event.target.formUrl.value;
+        memeTopText.className = "memeTopText";
+        memeTopText.textContent = event.target.formTopText.value;
+        memeBtmText.className = "memeBtmText";
+        memeBtmText.textContent = event.target.formBtmText.value;
+
+        meme.appendChild(memeImg);
+        meme.appendChild(memeTopText);
+        meme.appendChild(memeBtmText);
+        memesContainer.appendChild(meme);
+
+        memeForm.reset();
+
+        event.preventDefault();
+
+        // This works but why?
+        // Is it the best place to add event listeners?
+        var memes = document.getElementsByClassName("meme");
+        for (var i = 0; i < memes.length; i++) {
+          memes[i].addEventListener("mouseenter", mouseenterHandler);
+          memes[i].addEventListener("mouseleave", mouseleaveHandler);
+          memes[i].addEventListener("click", clickHandler);
+        }
+      }
+
+      function mouseenterHandler(event) {
+        // target can be any node in div.meme:
+        // img.memeImg, p.memeTopText, p.memeBtmText
+        var meme = event.target;
+        var memeHoverText = document.createElement("p");
+        memeHoverText.className = "memeHoverText";
+        var hoverText = document.createTextNode("X");
+        memeHoverText.appendChild(hoverText);
+        if (
+          meme.className.toLowerCase() === "meme" &&
+          meme.querySelector(".memeHoverText") === null
+        ) {
+          meme.appendChild(memeHoverText);
+        }
+      }
+
+      function mouseleaveHandler(event) {
+        var meme = event.target;
+        var memeHoverText = meme.querySelector(".memeHoverText");
+        if (meme.className.toLowerCase() === "meme" && memeHoverText !== null) {
+          meme.removeChild(memeHoverText);
+        }
+      }
+
+      function clickHandler(event) {
+        // target - the node p.memeHoverText in div.meme
+        var meme = event.target.parentNode;
+        if (meme !== null && meme.className.toLowerCase() === "meme") {
+          meme.parentNode.removeChild(meme);
+        }
+      }
+    </script>
   </body>
 </html>
