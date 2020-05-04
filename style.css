@@ -91,4 +91,5 @@ input {
   opacity: 0.4;
   z-index: 10;
   text-align: center;
+  line-height: 400px;
 }
